@@ -33,7 +33,7 @@ class LinkCrawler
     begin
       debug("#{url_address}: visiting #{attempt} time") if attempt == NUM_ATTEMPTS
 
-      response = HTTParty.get(url_address, { timeout: 45 })
+      response = get_response(url_address)
 
       record_entry(url_address, response)
 
@@ -63,6 +63,20 @@ class LinkCrawler
     end
   end
 
+  def get_response(url_address)
+    response = HTTParty.get(url_address, request_options)
+
+    if response.code == 500
+      unless url_address.include?('https')
+        response = HTTParty.get(url_address.sub('http', 'https'), request_options)
+
+        url_address.sub!('http', 'https') if response.code != 500
+      end
+    end
+
+    response
+  end
+
   def record_entry(url_address, response)
     parser = WebsiteParser.parse(html: response, url_address: url_address)
 
@@ -85,6 +99,10 @@ class LinkCrawler
 
   def debug(message)
     puts message
+  end
+
+  def request_options
+    { timeout: 45, verify: false }
   end
 
   attr_reader :source_file

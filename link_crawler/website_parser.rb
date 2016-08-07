@@ -36,7 +36,7 @@ class WebsiteParser
   end
 
   def parse_keywords
-    keywords_regex = KEYWORDS.join('|')
+    keywords_regex = KEYWORDS.map { |word| word + '([^(]|$)' }.join('|')
 
     if status == 'SUCCESS'
       @keywords = (relevant_html.scan(/(#{keywords_regex})/) + url_address.scan(/(#{keywords_regex})/))
