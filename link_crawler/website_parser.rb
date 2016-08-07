@@ -20,6 +20,7 @@ class WebsiteParser
   def initialize(html:, url_address:)
     @html = html
     @url_address = url_address
+    @keywords = []
 
     parse_html
   end
@@ -36,12 +37,13 @@ class WebsiteParser
   end
 
   def parse_keywords
-    keywords_regex = KEYWORDS.map { |word| word + '([^(]|$)' }.join('|')
-
     if status == 'SUCCESS'
-      @keywords = (relevant_html.scan(/(#{keywords_regex})/) + url_address.scan(/(#{keywords_regex})/))
-        .uniq
-        .join(', ')
+      KEYWORDS.each do |keyword|
+        keywords << relevant_html.scan(/(#{keyword}(?:[^(]|$))/).flatten.map { |match| match[0...-1] }.uniq.join
+        keywords << url_address.scan(/#{keyword}/)
+      end
+
+      keywords.reject(&:blank?).join(', ')
     end
   end
 
