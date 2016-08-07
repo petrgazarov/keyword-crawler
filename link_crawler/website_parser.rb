@@ -43,8 +43,10 @@ class WebsiteParser
         keywords << url_address.scan(/#{keyword}/)
       end
 
-      keywords.reject(&:blank?).join(', ')
+      keywords.reject(&:blank?)
     end
+
+    keywords.join(', ')
   end
 
   def relevant_html

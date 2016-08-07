@@ -40,10 +40,7 @@ class LinkCrawler
     rescue URI::InvalidURIError
       record_error(url_address, 'INVALID URL')
 
-    rescue OpenSSL::SSL::SSLError
-      record_error(url_address, 'URL ERROR: try changing https to http')
-
-    rescue Net::OpenTimeout, Net::ReadTimeout, SocketError
+    rescue Net::OpenTimeout, Net::ReadTimeout, SocketError, Errno::ECONNRESET, OpenSSL::SSL::SSLError
       record_error(url_address, 'UNABLE TO LOAD WEBSITE')
 
     rescue Errno::ECONNREFUSED
