@@ -38,19 +38,19 @@ class LinkCrawler
       record_entry(url_address, response)
 
     rescue URI::InvalidURIError
-      record_error(url_address, 'Invalid URL')
+      record_error(url_address, 'INVALID URL')
 
     rescue OpenSSL::SSL::SSLError
-      record_error(url_address, 'URL Error: try changing https to http')
+      record_error(url_address, 'URL ERROR: try changing https to http')
 
-    rescue Net::OpenTimeout
-      record_error(url_address, 'Unable to load website')
+    rescue Net::OpenTimeout, Net::ReadTimeout, SocketError
+      record_error(url_address, 'UNABLE TO LOAD WEBSITE')
 
     rescue Errno::ECONNREFUSED
-      record_error(url_address, 'Connection error: is URL valid?')
+      record_error(url_address, 'CONNECTION ERROR: is URL valid?')
 
     rescue Zlib::BufError, HTTParty::RedirectionTooDeep
-      record_error(url_address, 'Error loading website')
+      record_error(url_address, 'ERROR LOADING WEBSITE')
 
     rescue Exception => e
       if attempt == NUM_ATTEMPTS
