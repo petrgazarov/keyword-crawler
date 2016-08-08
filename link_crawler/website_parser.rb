@@ -11,7 +11,7 @@ class WebsiteParser
     'money'
   ]
 
-  attr_reader :status, :keywords
+  attr_accessor :status, :keywords
 
   def self.parse(html:, url_address:)
     new(html: html, url_address: url_address)
@@ -39,32 +39,32 @@ class WebsiteParser
   def parse_keywords
     if status == 'SUCCESS'
       KEYWORDS.each do |keyword|
-        keywords << relevant_html.scan(/(#{keyword}(?:[^(]|$))/).flatten.map { |match| match[0...-1] }.uniq.join
-        keywords << url_address.scan(/#{keyword}/)
+        @keywords << relevant_html.scan(/(#{keyword}(?:[^(]|$))/).flatten.map { |match| match[0...-1] }.uniq.join
+        @keywords << url_address.scan(/#{keyword}/).uniq.join
       end
 
-      keywords.reject(&:blank?)
+      @keywords.reject!(&:blank?).uniq!
     end
 
-    keywords.join(', ')
+    @keywords = keywords.join(', ')
   end
 
   def relevant_html
     parsed_page = Nokogiri::HTML(html)
 
-    body_and_title = parsed_page.at('body').try(:text).to_s + parsed_page.at('title').try(:text).to_s
-    body_and_title = body_and_title.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+    body = parsed_page.css('body').to_s
+    body = body.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
 
-    remove_script_and_style_tags!(body_and_title)
+    remove_tag_attributes!(body)
 
-    body_and_title.downcase
+    body.downcase
   end
 
-  def remove_script_and_style_tags!(html_body)
-    script_tags = html_body.scan(/\<script.*\<\/script\>/)
-    style_tags = html_body.scan(/\<style.*\<\/style\>/)
+  def remove_tag_attributes!(html_body)
+    a_attributes = html_body.scan(/<a.*<\/a>/)
+    tag_attributes = html_body.scan(/<[^>]*>/)
 
-    (script_tags + style_tags).each { |tag| html_body.slice!(tag) }
+    (a_attributes + tag_attributes).each { |tag_attribute| html_body.slice!(tag_attribute) }
   end
 
   attr_reader :html, :url_address
