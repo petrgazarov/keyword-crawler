@@ -3,12 +3,10 @@ require 'active_support'
 require 'active_support/core_ext'
 
 class WebsiteParser
+  # keywords to scan websites for
   KEYWORDS = [
-    'parenting',
-    'children',
-    'kids',
-    'finance',
-    'money'
+    'example',
+    'keywords'
   ]
 
   attr_accessor :status, :keywords
