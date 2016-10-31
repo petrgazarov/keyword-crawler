@@ -6,7 +6,7 @@ class WebsiteParser
   # keywords to scan websites for
   KEYWORDS = [
     'example',
-    'keywords'
+    'github'
   ]
 
   attr_accessor :status, :keywords
@@ -59,10 +59,9 @@ class WebsiteParser
   end
 
   def remove_tag_attributes!(html_body)
-    a_attributes = html_body.scan(/<a.*<\/a>/)
     tag_attributes = html_body.scan(/<[^>]*>/)
 
-    (a_attributes + tag_attributes).each { |tag_attribute| html_body.slice!(tag_attribute) }
+    tag_attributes.each { |tag_attribute| html_body.slice!(tag_attribute) }
   end
 
   attr_reader :html, :url_address

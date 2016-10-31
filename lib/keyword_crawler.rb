@@ -5,7 +5,7 @@ require 'pry'
 
 class LinkCrawler
   NUM_ATTEMPTS = 2
-  RESULTS_FILE = 'link_crawler/results.csv'
+  RESULTS_FILE = 'results.csv'
 
   def initialize(source_file)
     @source_file = source_file
