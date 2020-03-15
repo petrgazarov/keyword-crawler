@@ -1,7 +1,6 @@
 require 'csv'
 require_relative './website_parser.rb'
 require 'httparty'
-require 'pry'
 
 class LinkCrawler
   NUM_ATTEMPTS = 2

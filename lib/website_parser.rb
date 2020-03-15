@@ -5,7 +5,10 @@ require 'active_support/core_ext'
 class WebsiteParser
   # keywords to scan websites for
   KEYWORDS = [
-    'example',
+    'search',
+    'privacy',
+    'terms',
+    'about',
     'github'
   ]
 
