@@ -11,11 +11,11 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    mini_portile2 (2.1.0)
+    mini_portile2 (2.4.0)
     minitest (5.14.0)
     multi_xml (0.6.0)
-    nokogiri (1.7.0)
-      mini_portile2 (~> 2.1.0)
+    nokogiri (1.10.10)
+      mini_portile2 (~> 2.4.0)
     thread_safe (0.3.6)
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
@@ -26,7 +26,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport (= 4.2.8)
   httparty (= 0.14)
-  nokogiri (= 1.7)
+  nokogiri (= 1.10.10)
 
 BUNDLED WITH
    2.1.4
